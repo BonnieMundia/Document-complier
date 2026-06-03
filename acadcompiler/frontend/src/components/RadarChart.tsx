@@ -1,33 +1,28 @@
-import {
-  RadarChart as ReRadarChart,
-  Radar,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  ResponsiveContainer,
-  Tooltip,
-} from 'recharts'
+import React from 'react'
 
-interface Props {
-  categoryScores: Record<string, number>
+interface Props { categoryScores: Record<string, number> }
+
+function barColor(score: number) {
+  if (score >= 90) return '#059669'
+  if (score >= 70) return '#d97706'
+  return '#dc2626'
 }
 
 export function RadarChart({ categoryScores }: Props) {
-  const data = Object.entries(categoryScores).map(([key, value]) => ({
-    subject: key.charAt(0).toUpperCase() + key.slice(1),
-    score: value,
-    fullMark: 100,
-  }))
-
+  const entries = Object.entries(categoryScores).sort((a, b) => a[1] - b[1])
   return (
-    <ResponsiveContainer width="100%" height={260}>
-      <ReRadarChart data={data}>
-        <PolarGrid />
-        <PolarAngleAxis dataKey="subject" tick={{ fontSize: 11 }} />
-        <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fontSize: 10 }} />
-        <Radar name="Score" dataKey="score" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.25} />
-        <Tooltip formatter={(v: number) => [`${v.toFixed(1)}%`, 'Score']} />
-      </ReRadarChart>
-    </ResponsiveContainer>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      {entries.map(([cat, score]) => (
+        <div key={cat}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
+            <span style={{ fontSize: 12, color: 'var(--c-text-2)', textTransform: 'capitalize' }}>{cat}</span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: barColor(score) }}>{Math.round(score)}%</span>
+          </div>
+          <div className="progress-bar">
+            <div className="progress-fill" style={{ width: `${score}%`, background: barColor(score) }}/>
+          </div>
+        </div>
+      ))}
+    </div>
   )
 }

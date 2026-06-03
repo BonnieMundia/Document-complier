@@ -1,48 +1,41 @@
-interface Props {
-  score: number
-  band: 'green' | 'amber' | 'red'
-}
+import React from 'react'
 
-const BAND_COLORS = {
-  green: 'text-green-600 bg-green-100',
-  amber: 'text-amber-600 bg-amber-100',
-  red: 'text-red-600 bg-red-100',
-}
+interface Props { score: number; band: 'green' | 'amber' | 'red' }
 
-const BAND_LABELS = {
-  green: 'Compliant',
-  amber: 'Needs work',
-  red: 'Non-compliant',
-}
+const BAND_COLOR = { green: '#059669', amber: '#d97706', red: '#dc2626' }
+const BAND_LABEL = { green: 'Excellent', amber: 'Needs work', red: 'Poor match' }
 
 export function ScoreGauge({ score, band }: Props) {
-  const color = BAND_COLORS[band]
-  const circumference = 2 * Math.PI * 54
-  const dashOffset = circumference * (1 - score / 100)
+  const color = BAND_COLOR[band]
+  const r = 54
+  const circ = 2 * Math.PI * r
+  const offset = circ * (1 - score / 100)
 
   return (
-    <div className="flex flex-col items-center gap-2">
-      <div className="relative w-36 h-36">
-        <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
-          <circle cx="60" cy="60" r="54" fill="none" stroke="#e5e7eb" strokeWidth="12" />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+      <div style={{ position: 'relative', width: 140, height: 140 }}>
+        <svg width="140" height="140" viewBox="0 0 140 140" style={{ transform: 'rotate(-90deg)' }}>
+          <circle cx="70" cy="70" r={r} fill="none" stroke="var(--c-border)" strokeWidth="12"/>
           <circle
-            cx="60" cy="60" r="54" fill="none"
-            stroke={band === 'green' ? '#22c55e' : band === 'amber' ? '#f59e0b' : '#ef4444'}
-            strokeWidth="12"
-            strokeDasharray={circumference}
-            strokeDashoffset={dashOffset}
+            cx="70" cy="70" r={r} fill="none"
+            stroke={color} strokeWidth="12"
+            strokeDasharray={circ} strokeDashoffset={offset}
             strokeLinecap="round"
-            className="transition-all duration-700"
+            className="score-ring"
           />
         </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-3xl font-bold text-gray-800">{score.toFixed(0)}</span>
-          <span className="text-xs text-gray-500">/ 100</span>
+        <div style={{
+          position: 'absolute', inset: 0, display: 'flex',
+          flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <span style={{ fontSize: 34, fontWeight: 700, color: 'var(--c-text)', lineHeight: 1 }}>{Math.round(score)}</span>
+          <span style={{ fontSize: 12, color: 'var(--c-text-muted)', marginTop: 2 }}>/ 100</span>
         </div>
       </div>
-      <span className={`px-3 py-1 rounded-full text-sm font-semibold ${color}`}>
-        {BAND_LABELS[band]}
-      </span>
+      <span style={{
+        fontSize: 12, fontWeight: 600, padding: '3px 12px', borderRadius: 99,
+        background: `${color}20`, color, border: `1px solid ${color}40`,
+      }}>{BAND_LABEL[band]}</span>
     </div>
   )
 }

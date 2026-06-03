@@ -1,49 +1,36 @@
-interface AuditEntry {
-  key: string
-  citation?: string
-  reference?: string
-}
+import React from 'react'
+import { IconError, IconWarning } from './icons'
 
 interface Props {
-  undefined_: AuditEntry[]
-  unused: AuditEntry[]
+  undefined_: Array<{ key: string; citation: string }>
+  unused: Array<{ key: string; reference: string }>
 }
 
 export function CitationAudit({ undefined_, unused }: Props) {
+  if (undefined_.length === 0 && unused.length === 0) {
+    return <div style={{ fontSize: 13, color: 'var(--c-green)' }}>All citations matched &mdash; no undefined or unused references.</div>
+  }
   return (
-    <div className="space-y-4">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       {undefined_.length > 0 && (
         <div>
-          <h3 className="text-sm font-semibold text-red-700 mb-2">
-            Undefined citations — cited but not in reference list
-          </h3>
-          <div className="space-y-1">
-            {undefined_.map((u, i) => (
-              <div key={i} className="text-xs bg-red-50 border border-red-200 rounded px-3 py-2">
-                <code>{u.citation}</code>
-              </div>
-            ))}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+            <IconError size={14} /><span style={{ fontSize: 12, fontWeight: 600, color: 'var(--c-red)' }}>Undefined &mdash; cited but not in reference list ({undefined_.length})</span>
           </div>
+          {undefined_.map((u, i) => (
+            <div key={i} className="mono" style={{ fontSize: 12, background: 'var(--c-red-soft)', border: '1px solid var(--c-red-dim)', borderRadius: 6, padding: '6px 10px', marginBottom: 4 }}>{u.citation}</div>
+          ))}
         </div>
       )}
-
       {unused.length > 0 && (
         <div>
-          <h3 className="text-sm font-semibold text-amber-700 mb-2">
-            Unused references — in list but never cited
-          </h3>
-          <div className="space-y-1">
-            {unused.map((u, i) => (
-              <div key={i} className="text-xs bg-amber-50 border border-amber-200 rounded px-3 py-2">
-                <code>{u.reference}</code>
-              </div>
-            ))}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+            <IconWarning size={14}/><span style={{ fontSize: 12, fontWeight: 600, color: 'var(--c-amber)' }}>Unused &mdash; in reference list but never cited ({unused.length})</span>
           </div>
+          {unused.map((u, i) => (
+            <div key={i} className="mono" style={{ fontSize: 12, background: 'var(--c-amber-soft)', border: '1px solid var(--c-amber-dim)', borderRadius: 6, padding: '6px 10px', marginBottom: 4 }}>{u.reference}</div>
+          ))}
         </div>
-      )}
-
-      {undefined_.length === 0 && unused.length === 0 && (
-        <p className="text-sm text-green-600">Citation audit clean — all citations matched.</p>
       )}
     </div>
   )

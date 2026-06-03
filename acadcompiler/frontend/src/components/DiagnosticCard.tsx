@@ -1,83 +1,77 @@
+import React from 'react'
+import { IconError, IconWarning, IconInfo, IconWrench, IconX } from './icons'
 import type { Diagnostic } from '../types'
 
-interface Props {
-  diag: Diagnostic
-}
+interface Props { diag: Diagnostic; onDismiss?: () => void; dismissed?: boolean }
 
-const SEVERITY_STYLES = {
-  error: 'border-red-300 bg-red-50',
-  warning: 'border-amber-300 bg-amber-50',
-  info: 'border-blue-200 bg-blue-50',
+const SEV_ICON = {
+  error: <IconError size={14}/>,
+  warning: <IconWarning size={14}/>,
+  info: <IconInfo size={14}/>,
 }
+const SEV_STYLE = { error: 'diag-error', warning: 'diag-warning', info: 'diag-info' }
+const SEV_COLOR = { error: 'var(--c-red)', warning: 'var(--c-amber)', info: 'var(--c-blue)' }
 
-const SEVERITY_BADGE = {
-  error: 'bg-red-100 text-red-700',
-  warning: 'bg-amber-100 text-amber-700',
-  info: 'bg-blue-100 text-blue-700',
-}
-
-export function DiagnosticCard({ diag }: Props) {
-  const style = SEVERITY_STYLES[diag.severity]
-  const badge = SEVERITY_BADGE[diag.severity]
+export function DiagnosticCard({ diag, onDismiss, dismissed }: Props) {
+  if (dismissed) return null
+  const cls = diag.source === 'llm' ? 'diag-llm' : SEV_STYLE[diag.severity]
+  const color = diag.source === 'llm' ? 'var(--c-purple)' : SEV_COLOR[diag.severity]
 
   return (
-    <div className={`border rounded-lg p-4 ${style} ${diag.source === 'llm' ? 'opacity-80' : ''}`}>
-      <div className="flex items-start gap-2 mb-2">
-        <span className={`text-xs font-mono px-2 py-0.5 rounded ${badge}`}>
-          {diag.severity.toUpperCase()}
+    <div className={`diag-card ${cls}`}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+        <span style={{ color, display: 'flex' }}>{SEV_ICON[diag.severity]}</span>
+        <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color, letterSpacing: '0.04em' }}>
+          {diag.severity}
         </span>
         {diag.source === 'llm' && (
-          <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">
-            Suggestion (AI)
-          </span>
+          <span style={{ fontSize: 10, background: 'var(--c-purple-soft)', color: 'var(--c-purple)', padding: '1px 6px', borderRadius: 4, fontWeight: 600 }}>Advisory</span>
         )}
-        <span className="text-xs text-gray-500 font-mono ml-auto">{diag.rule_id}</span>
+        <span className="mono" style={{ fontSize: 10, color: 'var(--c-text-muted)', marginLeft: 'auto', marginRight: onDismiss ? 4 : 0 }}>
+          {diag.rule_id}
+        </span>
+        {onDismiss && (
+          <button onClick={onDismiss} className="btn btn-ghost btn-sm" style={{ padding: '2px 4px', color: 'var(--c-text-muted)' }}>
+            <IconX size={12}/>
+          </button>
+        )}
       </div>
 
-      <p className="text-sm font-medium text-gray-800 mb-2">{diag.message}</p>
+      <p style={{ margin: '0 0 8px', fontSize: 13, fontWeight: 500, color: 'var(--c-text)' }}>{diag.message}</p>
 
       {(diag.found || diag.expected) && (
-        <div className="text-xs text-gray-600 space-y-1 mb-2">
+        <div style={{ display: 'flex', gap: 16, marginBottom: 8, flexWrap: 'wrap' }}>
           {diag.found && (
-            <div>
-              <span className="font-medium">Found:</span>{' '}
-              <code className="bg-white px-1 rounded">{diag.found}</code>
-            </div>
+            <span style={{ fontSize: 12, color: 'var(--c-text-2)' }}>
+              Found: <code style={{ background: 'var(--c-surface)', padding: '1px 5px', borderRadius: 4, border: '1px solid var(--c-border)' }}>{diag.found}</code>
+            </span>
           )}
           {diag.expected && (
-            <div>
-              <span className="font-medium">Expected:</span>{' '}
-              <code className="bg-white px-1 rounded">{diag.expected}</code>
-            </div>
+            <span style={{ fontSize: 12, color: 'var(--c-text-2)' }}>
+              Expected: <code style={{ background: 'var(--c-surface)', padding: '1px 5px', borderRadius: 4, border: '1px solid var(--c-border)' }}>{diag.expected}</code>
+            </span>
           )}
         </div>
       )}
 
       {diag.evidence && (
-        <div className="text-xs text-gray-500 italic mb-2 border-l-2 border-gray-300 pl-2">
-          Evidence: {diag.evidence}
+        <div style={{ fontSize: 11, color: 'var(--c-text-muted)', fontStyle: 'italic', borderLeft: '2px solid var(--c-border)', paddingLeft: 8, marginBottom: 8 }}>
+          {diag.evidence}
         </div>
       )}
 
       {diag.fix_hint && (
-        <div className="text-xs text-green-700 bg-green-50 rounded px-2 py-1 mb-1">
-          Fix: {diag.fix_hint}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--c-green)', background: 'var(--c-green-soft)', padding: '5px 10px', borderRadius: 6 }}>
+          <IconWrench size={12}/> {diag.fix_hint}
         </div>
       )}
 
-      <div className="flex items-center gap-3 mt-2">
-        {diag.location && <span className="text-xs text-gray-400">{diag.location}</span>}
-        {diag.spec_reference && (
-          <a
-            href={diag.spec_reference}
-            target="_blank"
-            rel="noreferrer"
-            className="text-xs text-blue-600 hover:underline"
-          >
-            Spec reference
-          </a>
-        )}
-      </div>
+      {(diag.location || diag.spec_reference) && (
+        <div style={{ display: 'flex', gap: 12, marginTop: 8, fontSize: 11, color: 'var(--c-text-muted)' }}>
+          {diag.location && <span>{diag.location}</span>}
+          {diag.spec_reference && <a href={diag.spec_reference} target="_blank" rel="noreferrer" style={{ color: 'var(--c-blue)', textDecoration: 'none' }}>Spec reference &rarr;</a>}
+        </div>
+      )}
     </div>
   )
 }
