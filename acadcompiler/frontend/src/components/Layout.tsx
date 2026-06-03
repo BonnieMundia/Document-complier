@@ -1,14 +1,18 @@
 import React from 'react'
-import { IconMortarboard, IconCompile, IconHistory, IconBatch, IconCompare, IconCite } from './icons'
+import { IconMortarboard, IconCompile, IconHistory, IconBatch, IconCompare, IconCite, IconHandbook } from './icons'
 import { useAppStore } from '../store/useAppStore'
 import type { Tab } from '../types'
 
-const NAV_ITEMS: { id: Tab; label: string; icon: React.ReactNode }[] = [
+const TOOL_ITEMS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'compiler', label: 'Compiler',  icon: <IconCompile size={18}/> },
   { id: 'history',  label: 'History',   icon: <IconHistory size={18}/> },
   { id: 'batch',    label: 'Batch',     icon: <IconBatch size={18}/> },
   { id: 'compare',  label: 'Compare',   icon: <IconCompare size={18}/> },
   { id: 'cite',     label: 'Cite',      icon: <IconCite size={18}/> },
+]
+
+const GUIDE_ITEMS: { id: Tab; label: string; icon: React.ReactNode }[] = [
+  { id: 'handbook', label: 'Handbook',  icon: <IconHandbook size={18}/> },
 ]
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -36,9 +40,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Nav */}
-        <nav style={{ padding: '8px 8px', flex: 1 }}>
+        <nav style={{ padding: '8px 8px', flex: 1, overflowY: 'auto' }}>
           <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--c-text-muted)', textTransform: 'uppercase', letterSpacing: '0.07em', padding: '8px 12px 4px' }}>Tools</div>
-          {NAV_ITEMS.map(item => (
+          {TOOL_ITEMS.map(item => (
+            <button
+              key={item.id}
+              className={`nav-item${activeTab === item.id ? ' active' : ''}`}
+              onClick={() => setActiveTab(item.id)}
+            >
+              {item.icon}
+              {item.label}
+            </button>
+          ))}
+          <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--c-text-muted)', textTransform: 'uppercase', letterSpacing: '0.07em', padding: '12px 12px 4px' }}>Reference</div>
+          {GUIDE_ITEMS.map(item => (
             <button
               key={item.id}
               className={`nav-item${activeTab === item.id ? ' active' : ''}`}

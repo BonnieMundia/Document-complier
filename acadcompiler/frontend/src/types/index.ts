@@ -82,4 +82,59 @@ export interface SubmissionChecklist {
 
 export interface BibtexEntry { key: string; type: string; fields: Record<string, string> }
 
-export type Tab = 'compiler' | 'history' | 'batch' | 'compare' | 'cite'
+export type Tab = 'compiler' | 'history' | 'batch' | 'compare' | 'cite' | 'handbook'
+
+export interface HandbookStyleSummary {
+  id: string
+  name: string
+  authority: string
+  edition: string
+  discipline: string
+  template_source: 'uploaded' | 'internet'
+  template_url?: string
+  has_template_file: boolean
+  has_samples: boolean
+  sample_count: number
+  color: string
+}
+
+export interface HandbookSample {
+  id: string
+  title: string
+  description: string
+  filename: string
+}
+
+export interface HandbookNotes {
+  overview: string
+  page_setup?: string
+  font?: string
+  spacing?: string
+  headings?: string
+  citations?: string
+  references?: string
+  title_page?: string
+  cases?: string
+  legislation?: string
+  secondary?: string
+  abstract?: string
+  figures?: string
+  common_mistakes?: string[]
+  special_notes?: string[]
+  key_changes_from_6th?: string[]
+}
+
+export interface HandbookStyleDetail {
+  id: string
+  name: string
+  full_name: string
+  authority: string
+  edition: string
+  discipline: string
+  template_source: 'uploaded' | 'internet'
+  template_url?: string
+  template_file?: string
+  color: string
+  notes: HandbookNotes
+  samples: HandbookSample[] | null
+}

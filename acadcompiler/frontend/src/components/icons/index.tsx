@@ -156,3 +156,30 @@ export function IconSpinner({ size = 16, className = '' }: IconProps) {
     </svg>
   )
 }
+
+export function IconHandbook({ size = 20, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 20 20" fill="none" className={className}>
+      <rect x="3" y="2" width="11" height="15" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+      <path d="M6 5h5M6 8h5M6 11h3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+      <path d="M14 4v13l3-2.5V1.5L14 4z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/>
+    </svg>
+  )
+}
+
+export function IconLink({ size = 14, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 14 14" fill="none" className={className}>
+      <path d="M6 8a2.83 2.83 0 004 0l2-2a2.83 2.83 0 00-4-4l-1 1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+      <path d="M8 6a2.83 2.83 0 00-4 0L2 8a2.83 2.83 0 004 4l1-1" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
+    </svg>
+  )
+}
+
+export function IconChevronRight({ size = 14, className = '' }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 14 14" fill="none" className={className}>
+      <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
+}

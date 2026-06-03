@@ -7,6 +7,7 @@ import { HistoryPage } from './pages/HistoryPage'
 import { BatchPage } from './pages/BatchPage'
 import { ComparePage } from './pages/ComparePage'
 import { CitePage } from './pages/CitePage'
+import { HandbookPage } from './pages/HandbookPage'
 import { useAppStore } from './store/useAppStore'
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
     batch: <BatchPage/>,
     compare: <ComparePage/>,
     cite: <CitePage/>,
+    handbook: <HandbookPage/>,
   }
   return <Layout>{PAGE[activeTab] ?? <HomePage/>}</Layout>
 }

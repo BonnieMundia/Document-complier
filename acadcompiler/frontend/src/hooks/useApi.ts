@@ -80,3 +80,23 @@ export async function downloadGraderPdf(docId: string, style: string): Promise<B
   if (!r.ok) throw new Error('PDF export failed')
   return r.blob()
 }
+
+export async function fetchHandbookStyles() {
+  return req<any[]>('/templates/')
+}
+
+export async function fetchHandbookStyle(styleId: string) {
+  return req<any>(`/templates/${styleId}`)
+}
+
+export async function downloadHandbookTemplate(styleId: string): Promise<Blob> {
+  const r = await fetch(`${BASE}/templates/${styleId}/template-file`)
+  if (!r.ok) throw new Error('Template download failed')
+  return r.blob()
+}
+
+export async function downloadHandbookSample(styleId: string, sampleId: string): Promise<Blob> {
+  const r = await fetch(`${BASE}/templates/${styleId}/samples/${sampleId}`)
+  if (!r.ok) throw new Error('Sample download failed')
+  return r.blob()
+}
