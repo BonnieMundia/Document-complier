@@ -6,8 +6,8 @@ from fastapi.responses import FileResponse
 
 router = APIRouter()
 
-_OFFICIAL_DIR = Path(__file__).parent.parent.parent.parent / "templates" / "official"
-_SAMPLES_DIR  = Path(__file__).parent.parent.parent.parent / "templates" / "samples"
+_OFFICIAL_DIR = Path(__file__).parent.parent.parent / "templates" / "official"
+_SAMPLES_DIR  = Path(__file__).parent.parent.parent / "templates" / "samples"
 
 CATALOG = [
     {
