@@ -39,6 +39,42 @@ def _compute_triage(diagnostics: list[Diagnostic], spec, current_score: float) -
     return items[:5]
 
 
+def _assign_block_indices(diagnostics, blocks):
+    """Best-effort: link each diagnostic to the block whose text contains its evidence."""
+    index_text = [(b.index, b.text) for b in blocks if b.text.strip()]
+    for d in diagnostics:
+        if d.block_index is not None:
+            continue
+        for candidate in (d.evidence or "", d.found or ""):
+            needle = candidate.strip()
+            if len(needle) < 8:
+                continue
+            needle_l = needle.lower()[:120]
+            for bidx, btext in index_text:
+                if needle_l in btext.lower():
+                    d.block_index = bidx
+                    break
+            if d.block_index is not None:
+                break
+
+
+def _build_preview(blocks):
+    """Serialize IR blocks for the frontend document preview."""
+    return [
+        {
+            "index": b.index,
+            "kind": b.kind,
+            "level": b.level,
+            "text": b.text[:900] + ("…" if len(b.text) > 900 else ""),
+            "bold": b.bold,
+            "italic": b.italic,
+            "alignment": b.alignment,
+        }
+        for b in blocks
+        if b.text.strip()
+    ][:200]
+
+
 def _run_compile(doc_id: str, style: str) -> CompileReport:
     data, ext = get_doc(doc_id)
     spec = get_style(style)
@@ -51,6 +87,7 @@ def _run_compile(doc_id: str, style: str) -> CompileReport:
     diagnostics = run_all_rules(ir, spec)
     audit = build_citation_audit(ir, spec)
     diagnostics.extend(audit["diagnostics"])
+    _assign_block_indices(diagnostics, ir.blocks)
 
     score, cat_scores, band = compute_score(diagnostics, spec)
     triage = _compute_triage(diagnostics, spec, score)
@@ -62,6 +99,7 @@ def _run_compile(doc_id: str, style: str) -> CompileReport:
                  if any(s.lower().replace("_", " ") in b.text.lower() for b in ir.blocks)]
 
     partial = any(d.rule_id.startswith("ENGINE.") for d in diagnostics) or bool(ir.parse_warnings)
+    preview = _build_preview(ir.blocks)
 
     report = CompileReport(
         style_id=spec.id,
@@ -84,6 +122,7 @@ def _run_compile(doc_id: str, style: str) -> CompileReport:
         parse_warnings=ir.parse_warnings,
         partial=partial,
         triage=triage,
+        document_preview=preview,
     )
     return report
 

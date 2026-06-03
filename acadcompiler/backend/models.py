@@ -67,6 +67,7 @@ class Diagnostic(BaseModel):
     source: Literal["rule","llm"] = "rule"
     confidence: Optional[float] = None
     needs_review: bool = False
+    block_index: Optional[int] = None
 
 class CompileReport(BaseModel):
     style_id: str
@@ -85,6 +86,7 @@ class CompileReport(BaseModel):
     parse_warnings: list[str]
     partial: bool
     triage: list[dict] = Field(default_factory=list)
+    document_preview: list[dict] = Field(default_factory=list)
 
 class StyleSpec(BaseModel):
     id: str

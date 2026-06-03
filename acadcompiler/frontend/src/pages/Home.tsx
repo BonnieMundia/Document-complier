@@ -12,6 +12,7 @@ import { TriageBox } from '../components/TriageBox'
 import { ShareButton } from '../components/ShareButton'
 import { SubmissionChecklist } from '../components/SubmissionChecklist'
 import { IconDownload, IconCheck, IconSpinner, IconCompile } from '../components/icons'
+import { DocumentPreview } from '../components/DocumentPreview'
 import type { SubmissionChecklist as SType } from '../types'
 
 export function HomePage() {
@@ -22,6 +23,7 @@ export function HomePage() {
   } = useAppStore()
 
   const [sevFilter, setSevFilter] = useState<'all' | 'error' | 'warning' | 'info'>('all')
+  const [viewMode, setViewMode] = useState<'list' | 'document'>('list')
   const [checklist, setChecklist] = useState<SType | null>(null)
 
   useEffect(() => {
@@ -204,32 +206,60 @@ export function HomePage() {
           {/* Diagnostics */}
           <div className="card" style={{ padding: 24, marginBottom: 20 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 8 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--c-text)' }}>
-                Diagnostics <span style={{ color: 'var(--c-text-muted)', fontWeight: 400 }}>({errors} errors, {warnings} warnings, {infos} info)</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--c-text)' }}>
+                  Diagnostics <span style={{ color: 'var(--c-text-muted)', fontWeight: 400 }}>({errors} errors, {warnings} warnings, {infos} info)</span>
+                </div>
+                {report.document_preview && report.document_preview.length > 0 && (
+                  <div style={{ display: 'flex', background: 'var(--c-bg-alt, #f1f5f9)', borderRadius: 8, padding: 3, gap: 2 }}>
+                    {(['list', 'document'] as const).map(mode => (
+                      <button
+                        key={mode}
+                        onClick={() => setViewMode(mode)}
+                        style={{
+                          padding: '4px 12px', fontSize: 12, fontWeight: 600, borderRadius: 6, border: 'none', cursor: 'pointer',
+                          background: viewMode === mode ? '#fff' : 'transparent',
+                          color: viewMode === mode ? 'var(--c-text)' : 'var(--c-text-muted)',
+                          boxShadow: viewMode === mode ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                          transition: 'all 0.15s',
+                        }}
+                      >
+                        {mode === 'list' ? 'List View' : 'Document View'}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-              <div className="pill-tabs">
-                {(['all', 'error', 'warning', 'info'] as const).map(id => {
-                  const count = id === 'all' ? ruleDiags.length : id === 'error' ? errors : id === 'warning' ? warnings : infos
-                  const label = id === 'all' ? 'All' : id === 'error' ? 'Errors' : id === 'warning' ? 'Warnings' : 'Info'
-                  return (
-                    <button key={id} className={`pill-tab${sevFilter === id ? ' active' : ''}`} onClick={() => setSevFilter(id)}>
-                      {label} {count > 0 && <span style={{ opacity: 0.7 }}>{count}</span>}
-                    </button>
-                  )
-                })}
+              {viewMode === 'list' && (
+                <div className="pill-tabs">
+                  {(['all', 'error', 'warning', 'info'] as const).map(id => {
+                    const count = id === 'all' ? ruleDiags.length : id === 'error' ? errors : id === 'warning' ? warnings : infos
+                    const label = id === 'all' ? 'All' : id === 'error' ? 'Errors' : id === 'warning' ? 'Warnings' : 'Info'
+                    return (
+                      <button key={id} className={`pill-tab${sevFilter === id ? ' active' : ''}`} onClick={() => setSevFilter(id)}>
+                        {label} {count > 0 && <span style={{ opacity: 0.7 }}>{count}</span>}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+
+            {viewMode === 'document' && report.document_preview && report.document_preview.length > 0 ? (
+              <DocumentPreview blocks={report.document_preview} diagnostics={ruleDiags}/>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {filtered.length === 0 && <div style={{ fontSize: 13, color: 'var(--c-green)' }}>No {sevFilter === 'all' ? '' : sevFilter} diagnostics.</div>}
+                {filtered.map((d, i) => (
+                  <DiagnosticCard
+                    key={`${d.rule_id}-${i}`}
+                    diag={d}
+                    dismissed={dismissedRuleIds.has(d.rule_id)}
+                    onDismiss={() => dismissDiagnostic(d.rule_id)}
+                  />
+                ))}
               </div>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {filtered.length === 0 && <div style={{ fontSize: 13, color: 'var(--c-green)' }}>No {sevFilter === 'all' ? '' : sevFilter} diagnostics.</div>}
-              {filtered.map((d, i) => (
-                <DiagnosticCard
-                  key={`${d.rule_id}-${i}`}
-                  diag={d}
-                  dismissed={dismissedRuleIds.has(d.rule_id)}
-                  onDismiss={() => dismissDiagnostic(d.rule_id)}
-                />
-              ))}
-            </div>
+            )}
           </div>
 
           {/* LLM suggestions */}

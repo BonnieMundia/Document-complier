@@ -13,6 +13,17 @@ export interface Diagnostic {
   source: 'rule' | 'llm'
   confidence?: number
   needs_review: boolean
+  block_index?: number | null
+}
+
+export interface DocBlock {
+  index: number
+  kind: string
+  level?: number | null
+  text: string
+  bold?: boolean | null
+  italic?: boolean | null
+  alignment?: string | null
 }
 
 export interface CompileReport {
@@ -35,6 +46,7 @@ export interface CompileReport {
   }
   parse_warnings: string[]
   partial: boolean
+  document_preview?: DocBlock[]
   triage: Array<{
     rule_id: string; severity: string; category: string
     score_impact: number; message: string; fix_hint?: string; projected_after?: number
