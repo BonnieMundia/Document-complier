@@ -1,0 +1,63 @@
+id: vancouver
+name: Vancouver (ICMJE)
+authority: International Committee of Medical Journal Editors
+last_verified: ""
+page:
+  size: A4
+  margins_in:
+    top: 1
+    bottom: 1
+    left: 1
+    right: 1
+  mirror_margins: false
+  columns: 1
+font:
+  family: Times New Roman
+  size_pt: 12
+  fallbacks: []
+spacing:
+  line: double
+headings:
+  - level: 1
+    case: title
+    align: left
+    bold: true
+    italic: false
+    numbering: none
+  - level: 2
+    case: title
+    align: left
+    bold: false
+    italic: false
+    numbering: none
+citation:
+  system: numeric-superscript
+  intext_examples:
+    - "^1"
+    - "^1,2"
+  csl_id: vancouver
+references:
+  heading: References
+  heading_align: left
+  ordering: appearance
+  position: end
+  entry_examples:
+    - "1. Walsh F. Strengthening family resilience. 3rd ed. New York: Guilford Press; 2016."
+structure:
+  required_ordered:
+    - abstract
+    - body
+    - references
+  optional:
+    - acknowledgments
+    - appendices
+  forbidden: []
+special_rules: []
+weights:
+  page: 0.10
+  font: 0.10
+  spacing: 0.10
+  headings: 0.10
+  structure: 0.25
+  citation: 0.20
+  reference: 0.15

@@ -1,0 +1,100 @@
+id: ams
+name: American Meteorological Society manuscript
+authority: American Meteorological Society
+source_url: https://www.ametsoc.org/index.cfm/ams/publications/author-information/formatting-and-manuscript-components/
+last_verified: "VERIFY-AGAINST-MANUAL"
+page:
+  size: A4
+  margins_in:
+    top: 1
+    bottom: 1
+    left: 1
+    right: 1
+  mirror_margins: false
+  columns: 1
+font:
+  family: Times New Roman
+  size_pt: 12
+  fallbacks: []
+spacing:
+  line: double
+headings:
+  - level: 1
+    case: sentence
+    align: left
+    bold: true
+    italic: false
+    numbering: "1."
+  - level: 2
+    case: sentence
+    align: left
+    bold: false
+    italic: true
+    numbering: "a."
+  - level: 3
+    case: sentence
+    align: left
+    bold: false
+    italic: false
+    numbering: "1)"
+  - level: 4
+    case: sentence
+    align: left
+    bold: false
+    italic: false
+    numbering: "(i)"
+citation:
+  system: author-date
+  intext_examples:
+    - "(Kalnay et al. 1996)"
+    - "Shajani and Snell (2019)"
+  three_plus_authors: "et al."
+  csl_id: american-meteorological-society
+references:
+  heading: REFERENCES
+  heading_align: center
+  ordering: alphabetical
+  position: after-appendices
+  entry_examples:
+    - "Kalnay, E., and Coauthors, 1996: The NCEP/NCAR 40-Year Reanalysis Project. Bull. Amer. Meteor. Soc., 77, 437-471."
+structure:
+  required_ordered:
+    - title
+    - authors
+    - affiliations
+    - corresponding_author
+    - abstract
+    - body
+    - references
+  optional:
+    - significance_statement
+    - capsule
+    - acknowledgments
+    - data_availability
+    - appendixes
+  forbidden: []
+special_rules:
+  - id: AMS.ABSTRACT.LEN
+    description: "Abstract limited to 250 words"
+    severity: error
+    check: "abstract_word_limit:250"
+  - id: AMS.REFS.NONUM
+    description: "References alphabetical, unnumbered"
+    severity: error
+    check: ref_unnumbered_alpha
+  - id: AMS.CITE.NOCOMMA
+    description: "Author-date in-text uses no comma before the year"
+    severity: warning
+    check: intext_pattern
+  - id: AMS.REF.YEARCOLON
+    description: "Reference entries: 'Surname, F. M., Year: Title.' colon after year"
+    severity: warning
+    check: ref_entry_pattern
+weights:
+  page: 0.10
+  font: 0.10
+  spacing: 0.10
+  headings: 0.15
+  structure: 0.20
+  citation: 0.15
+  reference: 0.20

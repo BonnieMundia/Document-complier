@@ -1,0 +1,80 @@
+id: ieee
+name: IEEE conference template
+authority: IEEE
+last_verified: "VERIFY-AGAINST-MANUAL"
+page:
+  size: A4
+  margins_in:
+    top: 0.5
+    bottom: 1.0
+    left: 0.62
+    right: 0.62
+  mirror_margins: false
+  columns: 2
+font:
+  family: Times New Roman
+  size_pt: 10
+  fallbacks: []
+spacing:
+  line: single
+headings:
+  - level: 1
+    case: title
+    align: center
+    bold: false
+    italic: false
+    numbering: "I."
+  - level: 2
+    case: title
+    align: left
+    bold: false
+    italic: true
+    numbering: "A."
+citation:
+  system: numeric-bracket
+  intext_examples:
+    - "[1]"
+    - "as shown in [3]"
+    - "[1]-[3]"
+  ordering: appearance
+  csl_id: ieee
+references:
+  heading: References
+  heading_align: left
+  ordering: appearance
+  position: end
+  entry_examples:
+    - "[1] Z. Shajani and D. Snell, \"Title,\" Journal Abbrev., vol. 26, no. 1, pp. 54-61, 2019."
+structure:
+  required_ordered:
+    - title_block
+    - authors
+    - abstract
+    - index_terms
+    - body
+    - references
+  optional:
+    - acknowledgment
+    - appendix
+  forbidden: []
+special_rules:
+  - id: IEEE.COLUMNS.002
+    description: "Two-column body; title block + wide figures/tables span full width"
+    severity: error
+    check: "column_count:2"
+  - id: IEEE.ABSTRACT.FMT
+    description: "Abstract bold 'Abstract—' lead-in; keywords 'Index Terms—'"
+    severity: warning
+    check: abstract_leadins
+  - id: IEEE.REF.NUMORDER
+    description: "References numbered in citation order; initials precede surname"
+    severity: error
+    check: ref_numeric_order
+weights:
+  page: 0.10
+  font: 0.10
+  spacing: 0.05
+  headings: 0.10
+  structure: 0.20
+  citation: 0.25
+  reference: 0.20

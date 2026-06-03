@@ -1,0 +1,20 @@
+Fixture: good_apa7
+Description: Placeholder describing a document that satisfies all APA7 rules.
+
+Properties:
+- Page size: Letter (8.5 x 11 in)
+- Margins: 1 in on all sides
+- Font: Times New Roman 12pt
+- Line spacing: Double
+- Headings: Title case, centered (L1), left-aligned (L2)
+- Title page with: title, author, affiliation, course, instructor, date
+- Abstract section present
+- References section heading centered
+- References in alphabetical order
+- All in-text citations have matching reference entries
+
+Expected engine output:
+- score >= 90
+- score_band = green
+- diagnostics = [] (no errors or warnings)
+- partial = false

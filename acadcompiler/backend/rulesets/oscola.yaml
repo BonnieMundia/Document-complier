@@ -1,0 +1,89 @@
+id: oscola
+name: OSCOLA (Oxford Standard for Citation of Legal Authorities) — thesis template
+authority: University of Oxford Faculty of Law
+last_verified: "VERIFY-AGAINST-MANUAL"
+page:
+  size: A4
+  margins_in:
+    top: 1.0
+    bottom: 1.0
+    left: 1.34
+    right: 1.15
+  mirror_margins: true
+  columns: 1
+font:
+  family: Cambria
+  size_pt: 12
+  fallbacks:
+    - "Times New Roman 12"
+spacing:
+  line: onehalf
+headings:
+  - level: 1
+    case: title
+    align: left
+    bold: true
+    italic: false
+    numbering: "1"
+  - level: 2
+    case: title
+    align: left
+    bold: true
+    italic: false
+    numbering: "1.1"
+  - level: 3
+    case: title
+    align: left
+    bold: false
+    italic: true
+    numbering: "1.1.1"
+citation:
+  system: note-bibliography
+  intext_examples:
+    - "full footnote first"
+    - "short form after"
+  csl_id: oscola
+references:
+  heading: Bibliography
+  heading_align: left
+  ordering: alphabetical
+  position: end
+  entry_examples:
+    - "Walsh F, Strengthening Family Resilience (3rd edn, Guilford Press 2016)"
+    - "Z Shajani and D Snell, 'Title' (2019) 26 Journal Name 54"
+structure:
+  required_ordered:
+    - title_page
+    - body_chapters
+    - bibliography
+  optional:
+    - contents
+    - table_of_cases
+    - table_of_legislation
+    - appendices
+  forbidden: []
+special_rules:
+  - id: OSCOLA.FONT.CAMBRIA
+    description: "Body Cambria 12pt; footnotes 10pt single-spaced"
+    severity: warning
+    check: "font_family:Cambria"
+  - id: OSCOLA.MARGINS.MIRROR
+    description: "Mirror/binding margins (inner ~1.34in, outer ~1.15in)"
+    severity: info
+    check: mirror_margins
+  - id: OSCOLA.FN.FULLTHENSHORT
+    description: "First footnote per source full; later short form"
+    severity: warning
+    check: footnote_full_then_short
+  - id: OSCOLA.BIB.NODOT
+    description: "Bibliography surname-first, NO closing full stop; no p./pp. for journal pages"
+    severity: warning
+    check: bib_entry_pattern
+weights:
+  page: 0.10
+  font: 0.10
+  spacing: 0.05
+  headings: 0.15
+  structure: 0.20
+  citation: 0.25
+  reference: 0.15

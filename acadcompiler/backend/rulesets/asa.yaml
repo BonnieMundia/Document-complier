@@ -1,0 +1,87 @@
+id: asa
+name: American Sociological Association
+authority: American Sociological Association
+last_verified: "VERIFY-AGAINST-MANUAL"
+page:
+  size: Letter
+  margins_in:
+    top: 1
+    bottom: 1
+    left: 1
+    right: 1
+  mirror_margins: false
+  columns: 1
+font:
+  family: Times New Roman
+  size_pt: 12
+  fallbacks: []
+spacing:
+  line: double
+headings:
+  - level: 1
+    case: upper
+    align: left
+    bold: true
+    italic: false
+    numbering: none
+  - level: 2
+    case: title
+    align: left
+    bold: false
+    italic: true
+    numbering: none
+  - level: 3
+    case: title
+    align: left
+    bold: false
+    italic: true
+    numbering: none
+citation:
+  system: author-date
+  intext_examples:
+    - "(Walsh 2016)"
+    - "(Walsh 2016:24)"
+  three_plus_authors: "et al."
+  csl_id: american-sociological-association
+references:
+  heading: REFERENCES
+  heading_align: center
+  ordering: alphabetical
+  position: before-appendices
+  entry_examples:
+    - "Anderson, Eugene N. 2013. Warning Signs of Genocide. Lanham, MD: Lexington Books."
+structure:
+  required_ordered:
+    - title_page
+    - abstract
+    - body
+    - references
+  optional:
+    - endnotes
+    - appendices
+  forbidden: []
+special_rules:
+  - id: ASA.ABSTRACT.HEAD
+    description: "Abstract page heading is the PAPER TITLE in ALL CAPS (not 'Abstract')"
+    severity: error
+    check: abstract_heading_is_title_caps
+  - id: ASA.ABSTRACT.KW
+    description: "Single-paragraph abstract followed by 'Keywords: 3-5 keywords'"
+    severity: warning
+    check: abstract_one_para_keywords
+  - id: ASA.H1.CAPS
+    description: "First-level headings ALL CAPS"
+    severity: warning
+    check: "heading_case:1:upper"
+  - id: ASA.TITLEPAGE.WC
+    description: "Title page includes Word Count line"
+    severity: info
+    check: front_matter_fields
+weights:
+  page: 0.10
+  font: 0.10
+  spacing: 0.10
+  headings: 0.15
+  structure: 0.20
+  citation: 0.20
+  reference: 0.15

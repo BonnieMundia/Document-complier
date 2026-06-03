@@ -1,0 +1,16 @@
+Fixture: bad_margins
+Description: Placeholder describing a document with incorrect margins.
+
+Properties:
+- Page size: Letter (8.5 x 11 in)
+- Margins: top=1.5in, bottom=0.5in, left=1.5in, right=0.5in (all wrong for APA7)
+- Font: Times New Roman 12pt
+- Line spacing: Double
+
+Expected engine output for APA7:
+- PAGE.MARGIN.T01 (error) - top margin 1.5in, expected 1.0in
+- PAGE.MARGIN.B01 (error) - bottom margin 0.5in, expected 1.0in
+- PAGE.MARGIN.L01 (error) - left margin 1.5in, expected 1.0in
+- PAGE.MARGIN.R01 (error) - right margin 0.5in, expected 1.0in
+- score_band = amber or red
+- partial = false (margins were measured reliably)

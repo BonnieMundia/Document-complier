@@ -1,0 +1,81 @@
+id: apa7
+name: APA 7th edition (student paper)
+authority: American Psychological Association
+edition: "7th (2020)"
+last_verified: "VERIFY-AGAINST-MANUAL"
+page:
+  size: Letter
+  margins_in:
+    top: 1
+    bottom: 1
+    left: 1
+    right: 1
+  mirror_margins: false
+  columns: 1
+font:
+  family: Times New Roman
+  size_pt: 12
+  fallbacks:
+    - "Calibri 11"
+    - "Arial 11"
+spacing:
+  line: double
+headings:
+  - level: 1
+    case: title
+    align: center
+    bold: true
+    italic: false
+    numbering: none
+  - level: 2
+    case: title
+    align: left
+    bold: true
+    italic: false
+    numbering: none
+  - level: 3
+    case: title
+    align: left
+    bold: true
+    italic: true
+    numbering: none
+citation:
+  system: author-date
+  intext_examples:
+    - "(Shajani & Snell, 2019)"
+    - "(Walsh, 2016, p. 24)"
+  three_plus_authors: "et al."
+  csl_id: apa
+references:
+  heading: References
+  heading_align: center
+  ordering: alphabetical
+  position: end
+  entry_examples:
+    - "Walsh, F. (2016). Strengthening family resilience (3rd ed.). Guilford Press."
+structure:
+  required_ordered:
+    - title_page
+    - body
+    - references
+  optional:
+    - abstract
+    - appendices
+  forbidden: []
+special_rules:
+  - id: APA.REFS.ORDER
+    description: "References alphabetical by first author surname"
+    severity: error
+    check: ref_order_alpha
+  - id: APA.TITLEPAGE.001
+    description: "Title page: title, author, affiliation, course, instructor, date"
+    severity: warning
+    check: front_matter_fields
+weights:
+  page: 0.10
+  font: 0.10
+  spacing: 0.10
+  headings: 0.15
+  structure: 0.20
+  citation: 0.20
+  reference: 0.15

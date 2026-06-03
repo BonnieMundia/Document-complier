@@ -1,0 +1,63 @@
+id: chicago-authordate
+name: Chicago 17th edition (Author-Date)
+authority: University of Chicago Press
+edition: "17th (2017)"
+last_verified: ""
+page:
+  size: Letter
+  margins_in:
+    top: 1
+    bottom: 1
+    left: 1
+    right: 1
+  mirror_margins: false
+  columns: 1
+font:
+  family: Times New Roman
+  size_pt: 12
+  fallbacks: []
+spacing:
+  line: double
+headings:
+  - level: 1
+    case: title
+    align: center
+    bold: false
+    italic: false
+    numbering: none
+  - level: 2
+    case: title
+    align: left
+    bold: false
+    italic: false
+    numbering: none
+citation:
+  system: author-date
+  intext_examples:
+    - "(Walsh 2016)"
+    - "(Walsh 2016, 24)"
+  csl_id: chicago-author-date
+references:
+  heading: References
+  heading_align: left
+  ordering: alphabetical
+  position: end
+  entry_examples:
+    - "Walsh, Froma. 2016. Strengthening Family Resilience. 3rd ed. New York: Guilford Press."
+structure:
+  required_ordered:
+    - body
+    - references
+  optional:
+    - title_page
+    - appendices
+  forbidden: []
+special_rules: []
+weights:
+  page: 0.10
+  font: 0.10
+  spacing: 0.10
+  headings: 0.10
+  structure: 0.25
+  citation: 0.20
+  reference: 0.15

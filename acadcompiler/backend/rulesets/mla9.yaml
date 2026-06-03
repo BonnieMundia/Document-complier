@@ -1,0 +1,56 @@
+id: mla9
+name: MLA 9th edition
+authority: Modern Language Association
+edition: "9th (2021)"
+last_verified: ""
+page:
+  size: Letter
+  margins_in:
+    top: 1
+    bottom: 1
+    left: 1
+    right: 1
+  mirror_margins: false
+  columns: 1
+font:
+  family: Times New Roman
+  size_pt: 12
+  fallbacks: []
+spacing:
+  line: double
+headings:
+  - level: 1
+    case: title
+    align: left
+    bold: false
+    italic: false
+    numbering: none
+citation:
+  system: author-date
+  intext_examples:
+    - "(Walsh 24)"
+    - "(Walsh)"
+  csl_id: modern-language-association
+references:
+  heading: Works Cited
+  heading_align: center
+  ordering: alphabetical
+  position: end
+  entry_examples:
+    - "Walsh, Froma. Strengthening Family Resilience. 3rd ed., Guilford Press, 2016."
+structure:
+  required_ordered:
+    - body
+    - works_cited
+  optional:
+    - title_page
+  forbidden: []
+special_rules: []
+weights:
+  page: 0.10
+  font: 0.10
+  spacing: 0.10
+  headings: 0.10
+  structure: 0.25
+  citation: 0.20
+  reference: 0.15
