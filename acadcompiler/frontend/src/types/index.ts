@@ -35,6 +35,10 @@ export interface CompileReport {
   }
   parse_warnings: string[]
   partial: boolean
+  triage: Array<{
+    rule_id: string; severity: string; category: string
+    score_impact: number; message: string; fix_hint?: string; projected_after?: number
+  }>
 }
 
 export interface StyleSummary {
@@ -51,3 +55,31 @@ export interface UploadResponse {
   filename: string
   size_mb: number
 }
+
+export interface HistoryEntry {
+  compiled_at: string; style_id: string; score: number
+  band: 'green' | 'amber' | 'red'; filename?: string
+}
+
+export interface BatchResultItem {
+  doc_id: string; filename: string; score?: number; band?: string
+  error_count?: number; warning_count?: number; top_issue?: string; error?: string
+}
+
+export interface BatchResult {
+  results: BatchResultItem[]
+  summary: { mean_score: number; pass_count: number; fail_count: number; total: number }
+}
+
+export interface ChecklistItem {
+  check: string; label: string; status: 'pass' | 'fail' | 'unknown'; detail?: string
+}
+
+export interface SubmissionChecklist {
+  items: ChecklistItem[]; ready: boolean
+  pass_count: number; fail_count: number; unknown_count: number
+}
+
+export interface BibtexEntry { key: string; type: string; fields: Record<string, string> }
+
+export type Tab = 'compiler' | 'history' | 'batch' | 'compare' | 'cite'

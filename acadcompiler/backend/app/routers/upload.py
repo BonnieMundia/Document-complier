@@ -22,7 +22,14 @@ async def upload_document(file: UploadFile = File(...)):
 
     doc_hash = hashlib.sha256(data).hexdigest()
     doc_id = doc_hash[:16]
-    _doc_store[doc_id] = {"data": data, "ext": ext, "hash": doc_hash, "filename": file.filename}
+    _doc_store[doc_id] = {
+        "data": data,
+        "ext": ext,
+        "hash": doc_hash,
+        "filename": file.filename,
+        "last_report": None,
+        "compile_history": [],
+    }
 
     return {"doc_id": doc_id, "doc_hash": doc_hash, "filename": file.filename, "size_mb": round(size_mb, 2)}
 
@@ -33,3 +40,27 @@ def get_doc(doc_id: str) -> tuple[bytes, str]:
     if not doc:
         raise HTTPException(404, f"Document {doc_id} not found.")
     return doc["data"], doc["ext"]
+
+
+def get_doc_entry(doc_id: str) -> dict:
+    """Return the full doc store entry."""
+    doc = _doc_store.get(doc_id)
+    if not doc:
+        raise HTTPException(404, f"Document {doc_id} not found.")
+    return doc
+
+
+def store_last_report(doc_id: str, report_dict: dict) -> None:
+    """Store the last compile report and append to history (max 10)."""
+    if doc_id not in _doc_store:
+        return
+    _doc_store[doc_id]["last_report"] = report_dict
+    history = _doc_store[doc_id].setdefault("compile_history", [])
+    history.insert(0, {
+        "compiled_at": report_dict.get("compiled_at"),
+        "style_id": report_dict.get("style_id"),
+        "score": report_dict.get("score"),
+        "band": report_dict.get("score_band"),
+    })
+    # keep max 10
+    _doc_store[doc_id]["compile_history"] = history[:10]

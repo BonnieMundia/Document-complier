@@ -84,6 +84,7 @@ class CompileReport(BaseModel):
     citation_audit: dict
     parse_warnings: list[str]
     partial: bool
+    triage: list[dict] = Field(default_factory=list)
 
 class StyleSpec(BaseModel):
     id: str

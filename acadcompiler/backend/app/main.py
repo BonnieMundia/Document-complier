@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import upload, parse, compile, styles, reports, templates
+from .routers import (
+    upload, parse, compile, styles, reports,
+    templates, format, citations, batch, blind_review,
+)
 
 app = FastAPI(
     title="AcadCompiler",
@@ -16,19 +19,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(upload.router, prefix="/upload", tags=["upload"])
-app.include_router(parse.router, prefix="/parse", tags=["parse"])
-app.include_router(compile.router, prefix="/compile", tags=["compile"])
-app.include_router(styles.router, prefix="/styles", tags=["styles"])
-app.include_router(reports.router, prefix="/reports", tags=["reports"])
-app.include_router(templates.router, prefix="/templates", tags=["templates"])
+app.include_router(upload.router,        prefix="/upload",       tags=["upload"])
+app.include_router(parse.router,         prefix="/parse",        tags=["parse"])
+app.include_router(compile.router,       prefix="/compile",      tags=["compile"])
+app.include_router(format.router,        prefix="/format",       tags=["format"])
+app.include_router(styles.router,        prefix="/styles",       tags=["styles"])
+app.include_router(reports.router,       prefix="/reports",      tags=["reports"])
+app.include_router(citations.router,     prefix="/citations",    tags=["citations"])
+app.include_router(batch.router,         prefix="/batch",        tags=["batch"])
+app.include_router(blind_review.router,  prefix="/blind-review", tags=["blind-review"])
+app.include_router(templates.router,     prefix="/templates",    tags=["templates"])
 
 
-@app.get("/health")
+@app.get("/health", tags=["ops"])
 def health():
     return {"status": "ok", "version": "0.1.0"}
 
 
-@app.get("/ready")
+@app.get("/ready", tags=["ops"])
 def ready():
     return {"status": "ready"}
